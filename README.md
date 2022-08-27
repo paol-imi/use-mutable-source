@@ -2,9 +2,9 @@
   
 <br>
 
-<img src="./docs/src/img/logo.png" width="25%" /> <br>
+<img src="./docs/src/public/logo.png" width="25%" /> <br>
 
-<h1><img src="./docs/src/img/text.svg"></h1>
+<h1><img src="./docs/src/public/text.svg"></h1>
 
 **Minimal** and **elegant** way to integrate any **library** with [`React`](https://reactjs.org/)
 

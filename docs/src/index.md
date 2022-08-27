@@ -10,7 +10,7 @@ hero:
   text: Integrate any library with React
   tagline: Plug-in and start developing, it's minimal and elegant!
   image:
-    src: img/logo.png
+    src: logo.png
     alt: useMutableSource
   actions:
     - theme: brand

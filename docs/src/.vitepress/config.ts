@@ -6,7 +6,7 @@ const url = 'https://paol-imi.github.io';
 const homepage = `${url}/${name}`;
 const github = `https://github.com/paol-imi/${name}`;
 const title = 'useMutableSource';
-const logo = '/img/logo.png';
+const logo = '/logo.png';
 const image = `${homepage}${logo}`;
 
 export default defineConfig({
