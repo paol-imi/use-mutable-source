@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2017",
+    "jsx": "react-jsx",
+    /* Modules */
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    /* Interop Constraints */
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    /* Type Checking */
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}
