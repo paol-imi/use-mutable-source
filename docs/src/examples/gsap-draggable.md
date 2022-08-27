@@ -34,7 +34,7 @@ export default function App() {
 
   const isDragging = useSnapshot(
     // Derives the snapshot. If the Draggable has not yet been created,
-    // we are sure that the element is not dragging.
+    // we are sure that the element is not being dragged.
     (draggable) => (draggable ? draggable.isDragging : false),
     // Handles the subscription.
     (draggable, onChange) => {

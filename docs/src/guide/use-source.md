@@ -72,8 +72,8 @@ function useAnimation({ autoplay }) {
   ]);
 
   const isPlaying = useSnapshot(
-    // If the Animation source has not yet been created, we can rely on
-    // "autoplay" to determine if the animation is playing.
+    // If the Animation has not yet been created, we can rely on "autoplay"
+    // to determine if it will play when the component will mount.
     (animation) => (animation ? animation.isPlaying() : autoplay),
     // Subscribes to "Play"/"Pause" events.
     // We'll dig into it in the next chapter.

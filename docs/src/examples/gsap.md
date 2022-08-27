@@ -27,7 +27,8 @@ export default function App({ autoplay = true }) {
 
   const isActive = useSnapshot(
     // Derives the snapshot. If the Animation has not yet been created,
-    // we can rely on "autoplay" to determine if the animation is playing.
+    // we can rely on "autoplay" to determine if it will be active when the
+    // component will mount.
     (tween) => (tween ? tween.isActive() : autoplay),
     // Handles the subscription.
     (tween, onChange) => {
