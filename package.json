@@ -1,0 +1,101 @@
+{
+  "name": "use-mutable-source",
+  "version": "0.1.0",
+  "description": "Minimal and elegant way to integrate any library with React",
+  "keywords": [
+    "react",
+    "use-mutable-source",
+    "state",
+    "store",
+    "hooks"
+  ],
+  "homepage": "https://paol-imi.github.io/use-mutable-source",
+  "bugs": "https://github.com/paol-imi/use-mutable-source/issues",
+  "repository": "github:paol-imi/use-mutable-source",
+  "license": "MIT",
+  "author": {
+    "name": "Paolo Longo",
+    "email": "paololongo.git@gmail.com",
+    "url": "https://github.com/paol-imi"
+  },
+  "sideEffects": false,
+  "types": "./index.d.ts",
+  "module": "./index.esm.js",
+  "main": "./index.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "module": "./index.esm.js",
+      "import": "./index.esm.js",
+      "default": "./index.js"
+    },
+    "./atomic": {
+      "types": "./atomic/index.d.ts",
+      "module": "./atomic/index.esm.js",
+      "import": "./atomic/index.esm.js",
+      "default": "./atomic/index.js"
+    },
+    "./with-contract": {
+      "types": "./with-contract/index.d.ts",
+      "module": "./with-contract/index.esm.js",
+      "import": "./with-contract/index.esm.js",
+      "default": "./with-contract/index.js"
+    },
+    "./with-contract/atomic": {
+      "types": "./with-contract/atomic/index.d.ts",
+      "module": "./with-contract/atomic/index.esm.js",
+      "import": "./with-contract/atomic/index.esm.js",
+      "default": "./with-contract/atomic/index.js"
+    }
+  },
+  "files": [
+    "/atomic",
+    "/dist",
+    "/with-contract",
+    "/index.d.ts",
+    "/index.esm.js",
+    "/index.js",
+    "/index.native.js"
+  ],
+  "scripts": {
+    "build:js": "rollup --config rollup.config.ts --configPlugin rollup-plugin-esbuild",
+    "build:types": "tsc --declaration --declarationDir dist/types --emitDeclarationOnly",
+    "eslint": "eslint",
+    "prettier": "prettier --write .",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepublishOnly": "vitest run && npm run prettier && npm run eslint && npm run build:js && npm run build:types"
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
+    "@types/node": "^18.7.13",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/use-sync-external-store": "^0.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "@vitejs/plugin-react": "^2.0.1",
+    "c8": "^7.12.0",
+    "esbuild": "^0.15.5",
+    "eslint": "^8.22.0",
+    "eslint-plugin-react": "^7.31.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "happy-dom": "^6.0.4",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "2.78.1",
+    "rollup-plugin-esbuild": "^4.10.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.2",
+    "vite": "^3.0.9",
+    "vitest": "^0.22.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8 || ^17.0 || ^18.0"
+  },
+  "dependencies": {
+    "use-sync-external-store": "^1.2.0"
+  },
+  "packageManager": "pnpm@7.9.4"
+}
