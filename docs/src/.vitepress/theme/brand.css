@@ -1,0 +1,20 @@
+:root {
+  --vp-c-brand: #9ed5fc;
+  --vp-c-brand-light: #aaebfe;
+  --vp-c-brand-lighter: #b6fcff;
+  --vp-c-brand-dark: #89a9de;
+  --vp-c-brand-darker: #7480bf;
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    90deg,
+    #9ed5fc 0%,
+    #b7aaf9 50%,
+    #d17ff7 100%
+  );
+}
+
+.clip {
+  background-clip: text;
+  -webkit-background-clip: text;
+}

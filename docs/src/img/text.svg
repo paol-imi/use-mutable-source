@@ -1,0 +1,20 @@
+<svg fill="none" width="280" height="42.4"
+  xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="margin-top: -6px;">
+      <style>
+      .h1 {
+        margin: auto;
+        font-weight: bold;
+        font-family: system-ui;
+        background: linear-gradient(90deg, #9ED5FC 0%, #B7AAF9 50%, #D17FF7 100%);
+        -webkit-background-clip: text;
+        background-size: auto;
+        -webkit-text-fill-color: transparent;
+      }
+      </style>
+
+      <h1 class="h1">useMutableSource</h1>
+    </div>
+  </foreignObject>
+</svg>

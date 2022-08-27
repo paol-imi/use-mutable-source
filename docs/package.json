@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "scripts": {
+    "docs:dev": "vitepress dev src",
+    "docs:build": "vitepress build src",
+    "docs:serve": "vitepress serve src",
+    "docs:gitattributes": "node gitattributes.js"
+  },
+  "devDependencies": {
+    "vitepress": "1.0.0-alpha.10",
+    "vue": "^3.2.37"
+  },
+  "packageManager": "pnpm@7.9.4"
+}
