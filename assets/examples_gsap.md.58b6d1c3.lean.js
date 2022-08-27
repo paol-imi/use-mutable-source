@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,a as l}from"./app.109913e5.js";const i=JSON.parse('{"title":"GSAP","description":"","frontmatter":{},"headers":[],"relativePath":"examples/gsap.md"}'),p={name:"examples/gsap.md"},o=l("",4),e=[o];function t(c,r,F,y,D,A){return n(),a("div",null,e)}const u=s(p,[["render",t]]);export{i as __pageData,u as default};
