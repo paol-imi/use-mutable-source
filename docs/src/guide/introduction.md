@@ -2,7 +2,7 @@
 
 Imagine that one of your components has some complex interactions, and you have the perfect tool to manage them 😎. It can be anything, from a classic `state machine`, to your favorite `drag and drop` library. These tools are not specific to React, and therefore you need to integrate them.
 
-It's easy to ge tricked by the simplicity of `ref.current = something`, but React makes some quite strict assumptions on when and where side-effects are allowed, so that it can provides amazing features like [**concurrent mode**](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react) and [**fast refresh**](https://www.npmjs.com/package/react-refresh) ⚛️.
+It's easy to get tricked by the simplicity of `ref.current = something`, but React makes some quite strict assumptions on when and where side-effects are allowed, so that it can provides amazing features like [**concurrent mode**](https://reactjs.org/blog/2022/03/29/react-v18.html#what-is-concurrent-react) and [**fast refresh**](https://www.npmjs.com/package/react-refresh) ⚛️.
 
 Have you ever read or written `ref.current` during render? well, if yes, your app is likely to have bugs 🐞 and [**tearing**](https://github.com/reactwg/react-18/discussions/69) effects. And this is just the first of the pitfalls you might fall into.
 
