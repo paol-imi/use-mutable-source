@@ -2,7 +2,12 @@
   <h1 class="banner" v-if="isVisible">
     <p class="banner-text">
       ⭐️ If you like useSource, give it a star on
-      <a class="banner-link" href="/" @click="close">GitHub!</a>
+      <a
+        class="banner-link"
+        href="https://github.com/paol-imi/use-mutable-source"
+        @click="close"
+        >GitHub!</a
+      >
       ⭐️
     </p>
     <button
