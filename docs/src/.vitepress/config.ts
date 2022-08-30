@@ -38,13 +38,11 @@ export default defineConfig({
       text: 'Suggest changes to this page',
     },
 
-    /*
     algolia: {
-      appId: 'ZTF29HGJ69',
-      apiKey: '9c3ced6fed60d2670bb36ab7e8bed8bc',
+      appId: 'ZX0FEEDOQ4',
+      apiKey: '2fb46c11aaabae35391c9d37f32ed1a4',
       indexName: 'use-mutable-source',
     },
-    */
 
     socialLinks: [{ icon: 'github', link: github }],
 
