@@ -240,6 +240,7 @@ import { usePureSource } from 'use-mutable-source/with-contract';
 const [useSnapshot] = usePureSource(
   init,
   // ⚠️ subscribe must be shared to all snapshots.
+  // ⚠️ subscribe cannot be dynamic.
   subscribe
 );
 

@@ -10,7 +10,6 @@ import { gsap } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 import { InertiaPlugin } from 'gsap-trial/InertiaPlugin';
 import { useSource } from 'use-mutable-source';
-import './styles.css';
 
 // Registers the plugins.
 gsap.registerPlugin(Draggable, InertiaPlugin);
