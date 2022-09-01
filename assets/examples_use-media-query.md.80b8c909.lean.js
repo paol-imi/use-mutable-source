@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as n,a as l}from"./app.c08eec54.js";const u=JSON.parse('{"title":"useMediaQuery","description":"","frontmatter":{},"headers":[],"relativePath":"examples/use-media-query.md"}'),p={name:"examples/use-media-query.md"},o=l("",4),e=[o];function t(r,c,y,F,D,i){return a(),n("div",null,e)}const C=s(p,[["render",t]]);export{u as __pageData,C as default};
