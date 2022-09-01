@@ -1,6 +1,6 @@
 # Getting started
 
-This library aims to manage the `lifecycle`, `state` derivations and `mutations` of a mutable source. To achieve that we provide 2 main hooks, and depending on your use case you can choose one or the other and go through their documentation:
+This library aims to manage the `lifecycle`, `state` derivations and `mutations` of a mutable source. To achieve that we provide 2 main hooks, depending on your use case you can choose one or the other and go through their documentation:
 
 | [`useSource`](./use-source.md)          | <span style="font-weight:lighter">If the source initialization have side-effects, like accessing the DOM or a Ref.</span> |
 | --------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |

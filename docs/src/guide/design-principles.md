@@ -2,7 +2,7 @@
 
 > _Exploring the design choices is not mandatory in order to use this library but it is certainly useful for better understanding the API_
 
-This library aims to manage the `lifecycle`, `state` derivations and `mutations` of a mutable source. The **hooks** we provide are defined by 3 main functions that represent these concepts:
+This library aims to manage the `lifecycle`, `state` derivations and `mutations` of a mutable source. The **hooks** we provide accept 3 main functions that represent these concepts:
 
 - `init()` defines how the source is generated.
 - `getSnapshot()` defines how the state is derived from the source.
@@ -10,7 +10,7 @@ This library aims to manage the `lifecycle`, `state` derivations and `mutations`
 
 ## Implicit Memoization
 
-The hooks are designed to seem like primitives and they trait memoization as `implicit`. So instead of writing:
+The hooks are designed to seem like primitives and they trait memoization as **implicit**. This means that, instead of defining the functions inside `useCallback`:
 
 ```tsx {-5}
 const init = useCallback(
@@ -23,7 +23,7 @@ const init = useCallback(
 usePureSource(init);
 ```
 
-You directly provide the `dependency list`.
+You can inline them inside the hooks and directly provide the `dependency list`.
 
 ```tsx {4-5}
 usePureSource(
@@ -34,7 +34,7 @@ usePureSource(
 );
 ```
 
-If an hook accepts more functions, you can explicit the dependency list for each of them right after their definition.
+If an hook accepts more functions, you can provide the `dependency list` for each of them right after their definition.
 
 ```tsx {4-5,8-9}
 useSnapshot(
@@ -60,11 +60,11 @@ useSnapshot(
 );
 ```
 
-The main advantage of this choice is that you can avoid relying on **useMemo** or **useCallback** for `Semantic Guarantees`.
+The main advantage of this choice is that you can avoid relying on `useMemo` or `useCallback` for **Semantic Guarantees**.
 
-Also, you can inline these functions directly inside the hook without losing `locality` and avoiding the `verbosity` of **useCallback**. This definitely improve the code `readability`.
+Also, you can inline these functions directly inside the hook without losing **locality** and without compromising **code readability**.
 
-Unfortunately we lose the `linting` part on the dependencies, but in practice, since we are working with mutable objects, you often need to use some values that are **Not** `dependencies` (_like initialization options_). Most of the linting would just be disabled anyway.
+Unfortunately we lose the **linting** part on the dependencies, but in practice, since we are working with mutable objects, you often need to use some values that are **Not dependencies** (_like initialization options_). Most of the linting would just be disabled anyway.
 
 ```tsx {3-5}
 useCallback(
@@ -89,11 +89,11 @@ usePureSource(() => new Source(), []);
 usePureSource(() => new Source());
 ```
 
-There are two main reason for this choice. The first is that, in practice, you never want an `always-unstable` function. Creating a new Source on each render is just not useful.
+There are two main reason for this choice. The first is that, in practice, you never want an **always-unstable** function. Creating a new Source on each render is just not useful.
 
-The second and main reason is that sometimes we must constraint a function to be always stable (_see next [chapter](#polymorphism)_). With stability by default, we can just Not accept its dependency list, and the constraint becomes a `consequence` of the implementation.
+The second and main reason is that sometimes we must constraint a function to be always stable (_see next [chapter](#polymorphism)_). With stability by default, we can just Not accept its `dependency` `list`, and the constraint becomes a **consequence** of the implementation.
 
-This have a **Huge** difference from introducing a new API to express this constraint. You Don't have to `learn` and `remember` new concepts based on the hook you're using, you just have to learn the general rule. The API surface is smaller and `coherent`.
+This have a **Huge** difference from introducing a new API to express this constraint. You Don't have to **learn** and **remember** new concepts based on the hook you're using, you just have to learn the general rule. The API surface is smaller and **coherent**.
 
 ::: tip
 If you are not sure that a function can be dynamic, just put the dependency list right after it and `typescript` will show an error if it cannot be done.

@@ -1,6 +1,6 @@
 # Source as dependency
 
-There are cases in which the initialization of a source depends on another source. In this document we are going to explore some of the valid (and invalid) patterns to relate Pure sources and non-Pure sources.
+There are cases in which the initialization of a source depends on another source. In this document we are going to explore some of the valid (and invalid) patterns to relate Pure and non-Pure sources.
 
 ## Between Pure sources
 
@@ -85,7 +85,7 @@ const [, container] = usePureSource(
 );
 ```
 
-Another possible pattern is to create the Item children components dynamically, and generate an Item inside each of them.
+Another possible pattern is to create the Item components dynamically, and generate an Item inside each of them.
 
 ```tsx
 const ListComponent = () => {
@@ -144,7 +144,7 @@ const [, getItem] = useSource(() => {
 }, [container]);
 ```
 
-Another possible pattern is to create the Item children components dynamically, and generate an Item inside each of them.
+Another possible pattern is to create the Item components dynamically, and generate an Item inside each of them.
 
 ```tsx
 const ListComponent = () => {
@@ -179,7 +179,7 @@ const ItemComponent = ({ getList }) => {
 
 ## Inherit dependencies
 
-The stability of `useSnapshot` and `getSource` are defined the source `dependencies`. This means that if the dependencies don't change, these functions are guarantee to be `stable`. You can use these functions as dependencies as you would any other variable.
+The stability of `useSnapshot` and `getSource` is defined by the source `dependency list`. This means that if the dependencies don't change, these functions are guarantee to be `stable`. You can use these functions as dependencies as you would with any other variable.
 
 ```tsx {9-11}
 const [, getItem] = useSource(
