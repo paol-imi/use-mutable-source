@@ -1,4 +1,10 @@
-import { type DependencyList, useCallback, useMemo, useEffect } from 'react';
+import {
+  type DependencyList,
+  useCallback,
+  useMemo,
+  useEffect,
+  useDebugValue,
+} from 'react';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import { is } from '../../objectIs';
 import { useFactory, usePureFactory } from '../../useFactory';
@@ -132,10 +138,22 @@ export function useSource<Source>(
         }, []);
       }
 
-      return useSnapshot(getSourceSnapshot, slice);
+      const snapshot = useSnapshot(getSourceSnapshot, slice);
+
+      if (__DEV__) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useDebugValue(snapshot);
+      }
+
+      return snapshot;
     },
     [lazyInit, ref, slice]
   );
+
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue(ref);
+  }
 
   // This overload returns [useSnapshot, lazyInit].
   return [useSourceSnapshot, lazyInit] as const;
@@ -196,10 +214,22 @@ export function usePureSource<Source>(
         [source, ...getSnapshotDeps]
       );
 
-      return useSnapshot(getSourceSnapshot, slice);
+      const snapshot = useSnapshot(getSourceSnapshot, slice);
+
+      if (__DEV__) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useDebugValue(snapshot);
+      }
+
+      return snapshot;
     },
     [source, slice]
   );
+
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue(source);
+  }
 
   // This overload returns [useSnapshot, source].
   return [useSourceSnapshot, source] as const;

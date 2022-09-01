@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useDebugValue,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -114,6 +115,11 @@ export function useSource<Source, Snapshot>(
     }, []);
   }
 
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue([snapshot, ref]);
+  }
+
   // Returns [snapshot, lazyInit].
   return [snapshot, lazyInit] as const;
 }
@@ -148,6 +154,11 @@ export function usePureSource<Source, Snapshot>(
     (currentSnapshot) => getSnapshot(source, currentSnapshot),
     slice
   );
+
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue([snapshot, source]);
+  }
 
   // Returns [snapshot, source].
   return [snapshot, source] as const;

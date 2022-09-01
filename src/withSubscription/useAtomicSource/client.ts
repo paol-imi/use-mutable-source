@@ -3,6 +3,7 @@ import {
   useCallback,
   useLayoutEffect,
   useState,
+  useDebugValue,
 } from 'react';
 import { is } from '../../objectIs';
 import { useFactory, usePureFactory } from '../../useFactory';
@@ -110,6 +111,11 @@ export function useSource<Source, Snapshot>(
     memoizedSubscribe
   );
 
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue([snapshot, ref]);
+  }
+
   // Returns [snapshot, lazyInit].
   return [snapshot, lazyInit] as const;
 }
@@ -145,6 +151,11 @@ export function usePureSource<Source, Snapshot>(
     (currentSnapshot) => getSnapshot(source, currentSnapshot),
     memoizedSubscribe
   );
+
+  if (__DEV__) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useDebugValue([snapshot, source]);
+  }
 
   // Returns [snapshot, source].
   return [snapshot, source] as const;
