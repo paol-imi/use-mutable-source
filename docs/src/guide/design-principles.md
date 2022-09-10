@@ -262,9 +262,21 @@ const getSnapshot = ref(true);
 const subscribe = ref(true);
 </script>
 
-<input type="checkbox" v-model="init" /> `Init` /
-<input type="checkbox" v-model="getSnapshot" /> `getSnapshot` /
-<input type="checkbox" v-model="subscribe" /> `subscribe`
+<table style="text-align: center;">
+  <tr>
+    <td>&nbsp;</td>
+    <td><code>init</code></td>
+    <td><code>getSnapshot</code></td>
+    <td><code>subscribe</code></td>
+  </tr>
+  <tr>
+    <td>Constrains</td>
+    <td><input type="checkbox" v-model="init" />
+</td>
+    <td><input type="checkbox" v-model="getSnapshot" /> </td>
+    <td><input type="checkbox" v-model="subscribe" /> </td>
+  </tr>
+</table>
 
 <div v-if="!init && !getSnapshot && !subscribe">
 
@@ -340,7 +352,7 @@ Below is a list of unresolved questions about some design choices. If you have a
 
 ### Stability by default
 
-Stability is a very handy default, but... It's a new concept to `learn`, and this represents no small `cost` for a hook that aims to be used like a primitive.
+Stability is a very handy default, but... It's a new concept to `learn`, and this represents no small `cost` for an hook that aims to be used like a primitive.
 
 The first prototype of `use-mutable-source` was actually enforcing stability by requiring an empty dependency list. Typescript and a bunch of runtime warnings would have let the user notice if some dependencies were used where they weren't allowed.
 
@@ -358,13 +370,13 @@ usePureSource(
 );
 ```
 
-This approach was later replaced by the current one. Which of the two is better remains an open question for now.
+This approach was later replaced by the current one. Which of the two is better remains an unresolved question for now.
 
 ### Pure Contracts and Pure Sources
 
 Currently, we solve the subscription timing problem in Pure Sources by using the contract during render. This requires the contract to be pure and also requires the source to be `garbage collectable` after the contract has been used.
 
-This last requirements should be satisfied most of the time without any additional work, but it is not an easy thing to reason about.
+This last requirements should be satisfied most of the time without any additional work, but in general is not an easy thing to reason about.
 
 An alternative could be to subscribe inside `useInsertionEffect`. It would run before `useLayoutEffect` and `useEffect`, and it wouldn't be possible to dispatch state updates inside it, so we would be sure to subscribe before any changes can be performed.
 

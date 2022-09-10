@@ -21,7 +21,7 @@ yarn add use-mutable-source
 ```
 
 ```sh
-# or with pnpm
+# with pnpm
 pnpm add use-mutable-source
 ```
 
