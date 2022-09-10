@@ -3,6 +3,15 @@
 const {
   useSourceWithContract: useSource,
   usePureSourceWithContract: usePureSource,
+  withContract,
+  useFactory,
+  usePureFactory,
 } = require('../dist/index');
 
-module.exports = { useSource, usePureSource };
+module.exports = {
+  useSource,
+  usePureSource,
+  withContract,
+  useFactory,
+  usePureFactory,
+};

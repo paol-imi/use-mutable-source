@@ -4,6 +4,14 @@ const {
   useAtomicSourceWithSubscription: useSource,
   useAtomicPureSourceWithSubscription: usePureSource,
   shallowEqual,
+  useFactory,
+  usePureFactory,
 } = require('../dist/index');
 
-module.exports = { useSource, usePureSource, shallowEqual };
+module.exports = {
+  useSource,
+  usePureSource,
+  shallowEqual,
+  useFactory,
+  usePureFactory,
+};
