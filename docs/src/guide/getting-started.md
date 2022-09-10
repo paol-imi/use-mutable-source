@@ -6,6 +6,10 @@ This library aims to manage the `lifecycle`, `state` derivations and `mutations`
 | --------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
 | [`usePureSource`](./use-pure-source.md) | If the source initialization have No side-effects.                                                                        |
 
+## Examples
+
+Want to see use-mutable-source in action right away? Look at the [examples](../examples/use-media-query.md)!
+
 ## Adding to your Project
 
 Don't forget to add `use-mutable-source` to your project!
