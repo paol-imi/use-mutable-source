@@ -234,3 +234,48 @@ export function usePureSource<Source>(
   // This overload returns [useSnapshot, source].
   return [useSourceSnapshot, source] as const;
 }
+
+/**
+ * Allows to use a global source safely inside any component.
+ *
+ * @param source - the source
+ * @param contract - function to register a callback that is called whenever the source changes
+ * @returns an hook to derive snapshots and the source
+ */
+export function withContract<Source>(
+  source: Source,
+  contract: (source: Source, onChange: () => void) => void
+) {
+  const slice = new Slice();
+  contract(source, slice.update);
+
+  /**
+   * Hook that allows to consume a snapshot of the source.
+   *
+   * @param getSnapshot - function that returns a snapshot of the source
+   * @param getSnapshotDeps - dependency list that defines the "getSnapshot" lifecycle
+   * @returns the snapshot
+   */
+  function useSourceSnapshot<Snapshot>(
+    getSnapshot: (source: Source, currentSnapshot: Snapshot | null) => Snapshot,
+    getSnapshotDeps: DependencyList = []
+  ) {
+    const getSourceSnapshot = useCallback(
+      (currentSnapshot: Snapshot | null) =>
+        getSnapshot(source, currentSnapshot),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      getSnapshotDeps
+    );
+
+    const snapshot = useSnapshot(getSourceSnapshot, slice);
+
+    if (__DEV__) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useDebugValue(snapshot);
+    }
+
+    return snapshot;
+  }
+
+  return [useSourceSnapshot, source, slice] as const;
+}

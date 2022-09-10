@@ -45,7 +45,7 @@ export function getValues() {
   return formattedValues;
 }
 
-beforeEach(() => {
+afterEach(() => {
   // Cleans up the history.
   values = [];
 });

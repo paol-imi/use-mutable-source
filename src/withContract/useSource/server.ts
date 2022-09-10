@@ -20,3 +20,12 @@ export const usePureSource: typeof client.usePureSource = (
     source,
   ] as const;
 };
+
+export const withContract: typeof client.withContract = (source: any) => {
+  return [
+    (getSnapshot: (source: any, snapshot: null) => any) =>
+      getSnapshot(source, null),
+    source,
+    null as any,
+  ] as const;
+};

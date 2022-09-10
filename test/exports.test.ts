@@ -1,6 +1,8 @@
 import * as module from '../src';
 
 it('correctly define the exports', () => {
+  expect(module.useFactory).toBeDefined();
+  expect(module.usePureFactory).toBeDefined();
   expect(module.shallowEqual).toBeDefined();
 
   expect(module.usePureSourceWithContract).toBeDefined();
@@ -15,6 +17,9 @@ it('correctly define the exports', () => {
   expect(module.useSourceWithSubscription).toBeDefined();
   expect(module.useSourceWithSubscriptionClient).toBeDefined();
   expect(module.useSourceWithSubscriptionServer).toBeDefined();
+  expect(module.withContract).toBeDefined();
+  expect(module.withContractClient).toBeDefined();
+  expect(module.withContractServer).toBeDefined();
 
   expect(module.useAtomicPureSourceWithContract).toBeDefined();
   expect(module.useAtomicPureSourceWithContractClient).toBeDefined();

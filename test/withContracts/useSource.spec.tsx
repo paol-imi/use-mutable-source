@@ -1,8 +1,13 @@
 import { type DependencyList, useEffect } from 'react';
-import { useSource, usePureSource } from '../../src/withContract/useSource';
+import {
+  useSource,
+  usePureSource,
+  withContract,
+} from '../../src/withContract/useSource';
 import {
   useSource as useSourceServer,
   usePureSource as usePureSourceServer,
+  withContract as withContractServer,
 } from '../../src/withContract/useSource/server';
 import { Source } from '../utils/source';
 import { act, create } from '../utils/renderer';
@@ -643,5 +648,180 @@ describe('how usePureSource works', () => {
       'init:    source(null)',
       'render:  snapshot(null)',
     ]);
+  });
+});
+
+describe('how withContract works', () => {
+  const [useSnapshot, source] = withContract(
+    // Generate the source.
+    new Source(0),
+    // Subscribe to changes.
+    (source, onChange) => source.addChangeListener(onChange)
+  );
+
+  // App component.
+  function App({
+    getSnapshotDeps = undefined as undefined | DependencyList,
+    getSnapshotOffset = 0,
+  }) {
+    // Consume the snapshot.
+    const value = useSnapshot(
+      (source) => source.getValue() + getSnapshotOffset,
+      getSnapshotDeps
+    );
+
+    // Yield render value.
+    yieldValue(`render`, `snapshot(${value})`);
+
+    useEffect(() => {
+      // Value 2 triggers a new update with value 3.
+      if (value === 2) {
+        source.setValue(3);
+      }
+
+      // Yield effect values.
+      yieldValue(`effect`, `source(${source.getValue()}) snapshot(${value})`);
+    });
+
+    return null;
+  }
+
+  beforeEach(() => {
+    source.setValue(0);
+  });
+
+  it('getSnapshot changes every time a dependency changes', () => {
+    const root = create({ strictMode: true });
+
+    // Mounts the App with no dependencies.
+    act(() => root.update(<App getSnapshotOffset={0} getSnapshotDeps={[0]} />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(0)',
+      'render: snapshot(0)',
+      // First lifecycle.
+      'effect: source(0) snapshot(0)',
+      // Second lifecycle.
+      'effect: source(0) snapshot(0)',
+    ]);
+
+    // Triggers an update.
+    act(() => root.update(<App getSnapshotOffset={1} getSnapshotDeps={[1]} />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(1)',
+      'render: snapshot(1)',
+      'effect: source(0) snapshot(1)',
+    ]);
+
+    act(() => root.unmount());
+  });
+
+  it('getSnapshot is stable if no getSnapshot dependencies are provided', () => {
+    const root = create({ strictMode: true });
+
+    // Mounts the App with no dependencies.
+    act(() => root.update(<App getSnapshotOffset={0} />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(0)',
+      'render: snapshot(0)',
+      // First lifecycle.
+      'effect: source(0) snapshot(0)',
+      // Second lifecycle.
+      'effect: source(0) snapshot(0)',
+    ]);
+
+    // Triggers an update.
+    act(() => root.update(<App getSnapshotOffset={1} />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(0)',
+      'render: snapshot(0)',
+      'effect: source(0) snapshot(0)',
+    ]);
+
+    act(() => root.unmount());
+  });
+
+  it('correctly dispatches snapshot updates', () => {
+    const root = create({ strictMode: true });
+
+    // Mount the App.
+    act(() => root.update(<App getSnapshotOffset={0} />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(0)',
+      'render: snapshot(0)',
+      // First lifecycle.
+      'effect: source(0) snapshot(0)',
+      // Second lifecycle
+      'effect: source(0) snapshot(0)',
+    ]);
+
+    // Dispatch an update with a new value.
+    act(() => source.setValue(1));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(1)',
+      'render: snapshot(1)',
+      'effect: source(1) snapshot(1)',
+    ]);
+
+    // Dispatch an update with the current value.
+    act(() => source.setValue(1));
+
+    expect(getValues()).toEqual([]);
+
+    // Re-render with no changes.
+    act(() => root.update(<App />));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(1)',
+      'render: snapshot(1)',
+      'effect: source(1) snapshot(1)',
+    ]);
+
+    // Update with the special value 2, The component will trigger a new update
+    // with the value 3 inside an effect.
+    act(() => source.setValue(2));
+
+    expect(getValues()).toEqual([
+      'render: snapshot(2)',
+      'render: snapshot(2)',
+      'effect: source(3) snapshot(2)',
+      'render: snapshot(3)',
+      'render: snapshot(3)',
+      'effect: source(3) snapshot(3)',
+    ]);
+
+    act(() => root.unmount());
+  });
+
+  it('acts correctly during ssr', () => {
+    const [useSnapshot] = withContractServer(
+      // Generate the source.
+      new Source(0),
+      // Subscribe to changes.
+      (source, onChange) => {
+        yieldValue(`never`, `this is never called`);
+        source.addChangeListener(onChange);
+      }
+    );
+
+    const App = () => {
+      const snapshot = useSnapshot(() => null);
+
+      yieldValue(`render`, `snapshot(${snapshot})`);
+      return null;
+    };
+
+    const root = create();
+    // Mounts the App.
+    act(() => root.update(<App />));
+
+    expect(getValues()).toEqual(['render: snapshot(null)']);
+
+    act(() => root.unmount());
   });
 });

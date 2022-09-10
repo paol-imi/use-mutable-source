@@ -11,6 +11,7 @@ export {
 export {
   useSource as useSourceWithContract,
   usePureSource as usePureSourceWithContract,
+  withContract,
 } from './withContract/useSource';
 
 export {
@@ -31,6 +32,7 @@ export {
 export {
   useSource as useSourceWithContractClient,
   usePureSource as usePureSourceWithContractClient,
+  withContract as withContractClient,
 } from './withContract/useSource/client';
 
 export {
@@ -51,6 +53,7 @@ export {
 export {
   useSource as useSourceWithContractServer,
   usePureSource as usePureSourceWithContractServer,
+  withContract as withContractServer,
 } from './withContract/useSource/server';
 
 export {
@@ -58,4 +61,5 @@ export {
   usePureSource as useAtomicPureSourceWithContractServer,
 } from './withContract/useAtomicSource/server';
 
+export { useFactory, usePureFactory } from './useFactory';
 export { shallowEqual } from './shallowEqual';
