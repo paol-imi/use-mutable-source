@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as n,a as l}from"./app.faf97d0f.js";const i=JSON.parse('{"title":"GSAP Draggable","description":"","frontmatter":{},"headers":[],"relativePath":"examples/gsap-draggable.md"}'),p={name:"examples/gsap-draggable.md"},o=l("",5),e=[o];function t(r,c,F,D,y,A){return a(),n("div",null,e)}const g=s(p,[["render",t]]);export{i as __pageData,g as default};
