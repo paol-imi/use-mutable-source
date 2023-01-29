@@ -10,7 +10,7 @@
 
 [![types: Typescript](https://img.shields.io/badge/types-Typescript-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![React: hooks](https://img.shields.io/badge/React-hooks-26C9FF?style=flat-square&logo=react)](http://npm.im/use-mutable-source)
-[![Github CI](https://img.shields.io/github/workflow/status/paol-imi/use-mutable-source/Node.js%20CI?style=flat-square)](https://github.com/paol-imi/use-mutable-source/actions/workflows/ci.yml)
+[![Github CI](https://img.shields.io/github/actions/workflow/status/paol-imi/use-mutable-source/ci.yml?style=flat-square&branch=main)](https://github.com/paol-imi/use-mutable-source/actions/workflows/ci.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/paol-imi/use-mutable-source?color=44cc11&logo=codecov&style=flat-square)](https://codecov.io/gh/paol-imi/use-mutable-source)
 [![code style: Prettier](https://img.shields.io/badge/code_style-Prettier-ff69b4.svg?style=flat-square&logo=prettier)](https://prettier.io/)
 [![npm](https://img.shields.io/npm/v/use-mutable-source.svg?style=flat-square)](http://npm.im/use-mutable-source)
