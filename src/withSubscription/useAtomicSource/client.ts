@@ -2,8 +2,8 @@ import {
   type DependencyList,
   useCallback,
   useLayoutEffect,
-  useState,
   useDebugValue,
+  useReducer,
 } from 'react';
 import { is } from '../../objectIs';
 import { useFactory, usePureFactory } from '../../useFactory';
@@ -22,19 +22,9 @@ function useSnapshot<Snapshot>(
   getSnapshot: (currentSnapshot: Snapshot | null) => Snapshot,
   subscribe: (onChange: () => void) => () => void
 ) {
-  const [snapshot, setSnapshot] = useState(() => getSnapshot(null));
-
-  // TODO: is it enough to require "getSnapshot" to not be dynamic as a
-  // constraint, or should we actually enforce it with useCallback?
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  getSnapshot = useCallback(getSnapshot, []);
-
-  // TODO: since setState does not always bail-out when the state is unchanged,
-  // we could use useEvent (or a shim) and manually check for changes.
-  // @example
-  // const onChange = useEvent(() => {
-  //   if (!is(snapshot, getSnapshot(snapshot))) setSnapshot(getSnapshot);
-  // });
+  // "useReducer" is needed since it calls the reducer during render and we can
+  // use the latest props.
+  const [snapshot, setSnapshot] = useReducer(getSnapshot, null, getSnapshot);
 
   useLayoutEffect(
     () => {
@@ -42,11 +32,10 @@ function useSnapshot<Snapshot>(
       // effects, but it's critical that those updates run with the highest
       // priority. Each update is assumed with high priority until we are
       // subscribed.
-      if (!is(snapshot, getSnapshot(snapshot))) setSnapshot(getSnapshot);
+      if (!is(snapshot, getSnapshot(snapshot))) setSnapshot();
 
-      return subscribe(() => setSnapshot(getSnapshot));
+      return subscribe(setSnapshot);
     },
-    // "getSnapshot" is considered stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [subscribe]
   );
@@ -65,50 +54,48 @@ function useSnapshot<Snapshot>(
  */
 export function useSource<Source, Snapshot>(
   init: () => [source: Source, destroy?: (source: Source) => void],
+  initDeps: DependencyList,
   getSnapshot: (
     source: Source | null,
     currentSnapshot: Snapshot | null
   ) => Snapshot,
   subscribe: (source: Source, onChange: () => void) => () => void,
-  subscribeDeps: DependencyList = []
+  subscribeDeps?: DependencyList
 ) {
   // Generates the source.
-  const [ref, lazyInit] = useFactory(init, []);
+  const [ref, lazyInit] = useFactory(init, initDeps);
 
-  const memoizedSubscribe = useCallback(
-    // We assumes that the initial snapshot is predictable (every external value
-    // used by "init" should always be visible also to "getSnapshot"). Anyway,
-    // useSyncExternalStore will always compare the initial snapshot with the
-    // one derived from the source and correct it in case of mismatch.
-    (onChange: () => void) => {
-      if (__DEV__) {
-        // Every time the initial snapshot doesn't match the derived one,
-        // we show a warning.
-        const fallback = getSnapshot(null, null);
-        const snapshot = getSnapshot(lazyInit(), fallback);
-        if (!is(fallback, snapshot)) {
-          warning(
-            `The initial snapshot (derived when the source was not yet ` +
-              `created) is different from the snapshot derived from the ` +
-              `source. This will force a new render and may hurt performance.\n` +
-              `Initial snapshot: ${JSON.stringify(fallback, null, 2)}\n ` +
-              `Actual snapshot: ${JSON.stringify(snapshot, null, 2)}`
-          );
-        }
+  // We assumes that the initial snapshot is predictable (every external value
+  // used by "init" should always be visible also to "getSnapshot"). Anyway,
+  // useSyncExternalStore will always compare the initial snapshot with the
+  // one derived from the source and correct it in case of mismatch.
+  const subscribeToSource = (onChange: () => void) => {
+    if (__DEV__) {
+      // Every time the initial snapshot doesn't match the derived one,
+      // we show a warning.
+      const fallback = getSnapshot(null, null);
+      const snapshot = getSnapshot(lazyInit(), fallback);
+      if (!is(fallback, snapshot)) {
+        warning(
+          `The initial snapshot (derived when the source was not yet ` +
+            `created) is different from the snapshot derived from the ` +
+            `source. This will force a new render and may hurt performance.\n` +
+            `Initial snapshot: ${JSON.stringify(fallback, null, 2)}\n ` +
+            `Actual snapshot: ${JSON.stringify(snapshot, null, 2)}`
+        );
       }
+    }
 
-      return subscribe(lazyInit(), onChange);
-    },
-    // the "subscribe" lifecycle depends directly on "subscribeDeps".
-    // The source is always stable.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    subscribeDeps
-  );
+    return subscribe(lazyInit(), onChange);
+  };
 
   // Computes the snapshot.
   const snapshot = useSnapshot<Snapshot>(
     (currentSnapshot) => getSnapshot(ref.current, currentSnapshot),
-    memoizedSubscribe
+    subscribeDeps
+      ? // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+        useCallback(subscribeToSource, subscribeDeps)
+      : subscribeToSource
   );
 
   if (__DEV__) {

@@ -4,6 +4,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useReducer,
   useState,
 } from 'react';
 import { is } from '../../objectIs';
@@ -24,33 +25,21 @@ export function useSnapshot<Snapshot>(
   getSnapshot: (currentSnapshot: Snapshot | null) => Snapshot,
   slice: Slice
 ) {
-  const [snapshot, setSnapshot] = useState(() => getSnapshot(null));
+  // "useReducer" is needed since it calls the reducer during render and we can
+  // use the latest props.
+  const [snapshot, setSnapshot] = useReducer(getSnapshot, null, getSnapshot);
 
   // Store the versions seen during rendering.
   const initialVersion = slice.version;
-
-  // TODO: is it enough to require "getSnapshot" to not be dynamic as a
-  // constraint, or should we actually enforce it with useCallback?
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  getSnapshot = useCallback(getSnapshot, []);
-
-  // TODO: since setState does not always bail-out when the state is unchanged,
-  // we could use useEvent (or a shim) and manually check for changes.
-  // @example
-  // const onChange = useEvent(() => {
-  //   if (!is(snapshot, getSnapshot(snapshot))) setSnapshot(getSnapshot);
-  // });
 
   useLayoutEffect(() => {
     // Until we are not subscribed, we cannot intercept updates in layout
     // effects, but it's critical that those updates run with the highest
     // priority. Each update is assumed with high priority until we are
     // subscribed.
-    if (initialVersion !== slice.version) {
-      setSnapshot(getSnapshot);
-    }
+    if (initialVersion !== slice.version) setSnapshot();
 
-    return slice.subscribe(() => setSnapshot(getSnapshot));
+    return slice.subscribe(setSnapshot);
     // "getSnapshot" is considered stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slice]);

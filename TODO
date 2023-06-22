@@ -1,0 +1,7 @@
+- if dependency array is specified ? don'tmcare about function stabilit : default on function stability.
+- all have dependencies --> for atomics subscribe on render (when instance is available) then unsubscribe during the next effect all the wasted renders.
+- atomics with useReducer
+- update deps
+- update docs
+- update tests (in groups)
+- bump version
